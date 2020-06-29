@@ -1,58 +1,41 @@
 package com.feima.statusbardemo;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.feima.statusbardemo.eyes.Eyes;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    /**
-     * status_blue
-     */
-    private Button mBtnStatusBlue;
-    /**
-     * status_red
-     */
-    private Button mBtnStatusRed;
-    /**
-     * status_while
-     */
-    private Button mBtnStatusWhile;
+public class MainActivity extends AppCompatActivity {
+    private ListView mListWidget;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        initData();
+    }
+
+    private void initData() {
+        mListWidget.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"沉浸式", "改变状态栏"}));
+        mListWidget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String str = (String) mListWidget.getItemAtPosition(position);
+                if ("改变状态栏".equals(str)) {
+                    startActivity(new Intent(MainActivity.this, StatusBarChangeActivity.class));
+                } else if ("沉浸式".equals(str)) {
+                    startActivity(new Intent(MainActivity.this, ImmersiveStatusBarActivity.class));
+                }
+            }
+        });
     }
 
     private void initView() {
-        mBtnStatusBlue = (Button) findViewById(R.id.btn_status_blue);
-        mBtnStatusBlue.setOnClickListener(this);
-        mBtnStatusRed = (Button) findViewById(R.id.btn_status_red);
-        mBtnStatusRed.setOnClickListener(this);
-        mBtnStatusWhile = (Button) findViewById(R.id.btn_status_while);
-        mBtnStatusWhile.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            default:
-                break;
-            case R.id.btn_status_blue:
-                Eyes.setStatusBarLightMode(this, Color.BLUE);
-                break;
-            case R.id.btn_status_red:
-                Eyes.setStatusBarLightMode(this, Color.RED);
-                break;
-            case R.id.btn_status_while:
-                Eyes.setStatusBarLightMode(this,Color.WHITE);
-                break;
-        }
+        mListWidget = (ListView) findViewById(R.id.list_widget);
     }
 }

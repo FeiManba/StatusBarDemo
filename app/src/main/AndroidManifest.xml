@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".StatusBarChangeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ImmersiveStatusBarActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ImageTranslucentTheme" />
     </application>
 
 </manifest>
